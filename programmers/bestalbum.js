@@ -3,7 +3,7 @@
 
 function solution(genres, plays) {
     var answer = [];
-    var orders = []; // [{type: "classic", mostPlay:400, plays: [{plays: 300, index: 0}, {...}]}, ... ]
+    var orders = []; // [{type: "classic", totalPlay:2300, plays: [{plays: 300, index: 0}, {...}]}, ... ]
 
     genres.forEach(function(value, index) {
         // add geners section
@@ -11,58 +11,37 @@ function solution(genres, plays) {
         for (var i = 0, len = orders.length; i < len; i++) {
             if (orders[i].type === value) {
                 orders[i].plays.push({ "plays": plays[index], "index": index });
-                // update most plays
-                if (plays[index] > orders[i].mostPlay) {
-                    orders[i].mostPlay = plays[index];
-                }
+                orders[i].totalPlay += plays[index];
 
                 isExist = true;
                 break;
             }
         }
+
         if (isExist === false) {
-            orders.push({ type: value, mostPlay: plays[index], plays: [{ "plays": plays[index], "index": index }] });
+            orders.push({ type: value, totalPlay: plays[index], plays: [{ "plays": plays[index], "index": index }] });
         }
     });
 
     // sorting plays in genre
     orders.forEach(function(value) {
         value.plays.sort(function (a, b) {
-            if (a["plays"] > b["plays"]) {
-                return -1;
+            if (a["plays"] === b["plays"]) {
+                return a.index - b.index;
             }
-            else if (a["plays"] < b["plays"]) {
-                return 1;
-            }
-            else if (a["plays"] === b["plays"]) {
-                if (a["index"] > b["index"]) {
-                    return 1;
-                }
-                else if (a["index"] < b["index"]) {
-                    return -1;
-                }
-            }
+            return b.plays -a.plays;
         });
     });
 
     // sorting genre
     orders.sort(function (a, b) {
-        if (a["mostPlay"] > b["mostPlay"]) {
-            return -1;
-        }
-        else if (a["mostPlay"] < b["mostPlay"]) {
-            return 1;
-        }
-        else {
-            return 0;
-        }
+        return b.totalPlay - a.totalPlay;
     });
 
     // print index by order
-    orders.forEach(function (value) {
-        for (var i = 0, len = value["plays"].length; i < len && len - i > 1; i += 2) {
-            answer.push(value["plays"][i]["index"]);
-            answer.push(value["plays"][i + 1]["index"]);
+    orders.forEach(function (gerne) {
+        for (var i = 0, len = gerne.plays.length; i < len && i < 2; i++) {
+            answer.push(gerne.plays[i].index);
         }
     })
 
@@ -70,12 +49,18 @@ function solution(genres, plays) {
 }
 
 
+// [ 4, 1, 3, 0 ]
 var genres = ["classic", "pop", "classic", "classic", "pop"];
 var plays = [500, 600, 150, 800, 2500];
 
+// [ 2, 1 ]
 var genres1 = ["classic", "classic", "classic"];
 var plays1 = [500, 800, 2500];
 
+// [ 2, 0, 1]
 var genres2 = ["classic1", "classic2", "classic1"];
 var plays2 = [500, 800, 2500];
+
+console.log(solution(genres, plays));
+console.log(solution(genres1, plays1));
 console.log(solution(genres2, plays2));
