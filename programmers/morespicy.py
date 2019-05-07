@@ -23,7 +23,7 @@ def solution(scoville, K):
 
         # cal : arr[0] + arr[1] * 2
         score = tmp[0] + tmp[1] * 2
-        scoville.append(score)
+        scoville.insert(0, score)
         scoville.sort()
 
         answer += 1
