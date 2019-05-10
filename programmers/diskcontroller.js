@@ -5,7 +5,7 @@ function solution(jobs) {
     var durAvag = 0;
     var durSum = 0;                 // 동작 총 시간
 
-    var distHead = 0;               // 마지막 지점
+    var time = 0;               // 마지막 지점
     var jobsLength = jobs.length;
 
     var jobQueue = [];
@@ -20,10 +20,10 @@ function solution(jobs) {
 
     while(jobIdx < jobsLength || jobQueue.length) {
         // insert jobQueue
-        while (jobs[jobIdx] && distHead >= jobs[jobIdx][0]) {
+        while (jobs[jobIdx] && time >= jobs[jobIdx][0]) {
             jobQueue.push(jobs[jobIdx]);
             jobQueue.sort(function (a, b) {
-                //return (distHead - a[0] + a[1]) - (distHead - b[0] + b[1]); // fail solution
+                //return (time - a[0] + a[1]) - (time - b[0] + b[1]); // fail solution
                 return a[1] - b[1];
             });
             jobIdx += 1;
@@ -32,13 +32,13 @@ function solution(jobs) {
         // caculate
         if( jobQueue.length === 0 ) {
             // not Overlap timming
-            distHead = jobs[jobIdx][0];
+            time = jobs[jobIdx][0];
         } else {
             // Overlap timming
             var disk = jobQueue.shift();
 
-            durSum += (distHead - disk[0]) + disk[1];
-            distHead += disk[1];
+            durSum += (time - disk[0]) + disk[1];
+            time += disk[1];
         }
     }
 
