@@ -29,5 +29,5 @@ function solution(heights) {
     return answer;
 }
 
-let heights = [6,9,5,7,4];
+let heights = [6,9,5,7,4];  // [0, 0, 2, 2, 4]
 solution(heights);
