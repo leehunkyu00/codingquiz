@@ -2,30 +2,34 @@
 // 이분탐색, 예산
 
 // 채점 결과
-// 정확성: 
-// 합계: 
+// 정확성: 75.0
+// 효율성: 25.0
+// 합계: 100.0 / 100.0
 
 function solution(budgets, M) {
     let sortedBudgets = budgets.sort((a, b) => a - b);
-    let length = budgets.length;
 
     let low = 0;
-    let high = M;
+    let high = sortedBudgets[sortedBudgets.length - 1];
 
     let limit = low + Math.floor((high - low) / 2);
 
-    let test = 0;
+    while(1) {
+        if (low === high) {
+            break;
+        }
+        else if ((high - low) === 1) {
+            let highSum = getSum(sortedBudgets, high);
 
-    while(1 && test++ < 14) {
-        console.log(test, ") limit : ", limit, " / low : ", low, "  high : ", high);
-        if (low === high || (high - low) === 1) {
+            limit = low;
+            if (highSum < M) {
+                limit = high;
+            }
             break;
         }
 
-        console.log(getSum(sortedBudgets, limit), " > ", M);
         const sum = getSum(sortedBudgets, limit);
         if (sum === M) {
-            //high = limit;
             break;
         }
         else if (sum < M) {
@@ -38,19 +42,13 @@ function solution(budgets, M) {
         limit = low + Math.floor((high - low) / 2);
     }
 
-    console.log("M ", M);
-    console.log("sortedBudgets ", sortedBudgets);
-    console.log("limit ", limit);
-
-    console.log(" sum  :",getSum(sortedBudgets, limit));
-
     return limit;
 }
 
 function getSum(sortedBudgets, limit) {
     let sum = 0;
     for (let i = 0, len = sortedBudgets.length; i < len; i++) {
-        if (sortedBudgets[i] > limit) {
+        if (limit && sortedBudgets[i] > limit) {
             sum += limit * (len - i);
             break;
         }
@@ -96,7 +94,7 @@ function solution2(budgets, M) {
     return limit;
 }
 
-function insightTool(budgets, M) {
+function solution1(budgets, M) {
     let answer = 0;
     let sortedBudgets = budgets.sort();
     let length = budgets.length;
@@ -126,7 +124,7 @@ function insightTool(budgets, M) {
 }
 
 function generateValue() {
-    const degree = 1000;        // origin : 1
+    const degree = 1;        // origin : 1, test : 1000
     const count = Math.floor(Math.random() * (99996 / degree)) + 3;        // contry count
     const M = Math.floor(Math.random() * (1000000000 / degree)/degree) + count;   // total 
     let budges = [];
@@ -144,9 +142,9 @@ function generateValue() {
     return [budges, M];
 }
 
-//insightTool([120, 110, 140, 150], 485);
-//solution([120, 110, 140, 150], 485);
+let res = 0;
+//res = solution([120, 110, 140, 150], 485);      // result : 127
+res = solution([1,2,3,4,5,6,7,8,9,10], 56);       // result : 10 (total sum : 55)
+//res = solution(...generateValue());
 
-//solution(...generateValue());
-solution([120, 110, 140, 150], 485);
-//getSum([1,2,3,4,5,6,7,8,9,10], 5);
+console.log("Result : ", res);
