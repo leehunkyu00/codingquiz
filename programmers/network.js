@@ -37,7 +37,6 @@ function iter(node, data) {
     return null;
 }
 
-
 function solution(n, computers) {
 
     let root = new Node(-1, -1);
@@ -78,11 +77,28 @@ function solution(n, computers) {
     })
 
     console.log(root);
+    printAll(root);
     return networkCnt;
 }
 
+function printAll(node) {
+    // implement
+    console.log(node.data, ":", node);
+
+    if (node.nexts.length === 0) {
+        return null;
+    }
+
+    const childNodes = node.nexts;
+    for (let i = 0, len = childNodes.length; i < len; i++) {
+        printAll(childNodes[i], data);
+    }
+}
+
 let res;
-let data = [3, [[1, 1, 0], [1, 1, 0], [0, 0, 1]]];
+let data;
+data = [3, [[1, 1, 0], [1, 1, 0], [0, 0, 1]]];
+data = [4, [[1, 1, 0, 0], [1, 0, 0, 1], [0, 0, 1, 1], [1, 1, 1, 0]]];
 res = solution(...data);
 
 
